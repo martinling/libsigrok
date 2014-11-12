@@ -258,6 +258,8 @@ typedef std::map<const sigrok::ConfigKey *, Glib::VariantBase>
     std::shared_ptr<sigrok::Trigger>, trigger, trigger, set_trigger);
 
 %attributestring(sigrok::Session, std::string, filename, filename);
+%attributestring(sigrok::Session,
+    std::shared_ptr<sigrok::Context>, context, context);
 
 %attribute(sigrok::Packet,
     const sigrok::PacketType *, type, type);

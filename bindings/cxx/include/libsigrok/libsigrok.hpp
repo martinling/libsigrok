@@ -711,6 +711,8 @@ public:
 	void set_trigger(shared_ptr<Trigger> trigger);
 	/** Get filename this session was loaded from. */
 	string filename();
+	/** Get context this session is associated with. */
+	shared_ptr<Context> context();
 protected:
 	Session(shared_ptr<Context> context);
 	Session(shared_ptr<Context> context, string filename);
