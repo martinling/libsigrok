@@ -290,12 +290,16 @@ SR_PRIV int sr_warn(const char *format, ...)
 SR_PRIV int sr_err(const char *format, ...)
 {
 	int ret;
-	va_list args;
+	va_list args, args_copy;
 
 	va_start(args, format);
+	va_copy(args, args_copy);
 	ret = sr_log_cb(sr_log_cb_data, SR_LOG_ERR, format, args);
 	va_end(args);
-
+	char *msg = g_strdup_vprintf(format, args_copy);
+	va_end(args_copy);
+	sr_error_stack_push(msg);
+	g_free(msg);
 	return ret;
 }
 

@@ -19,6 +19,7 @@
  */
 
 #include "libsigrok.h"
+#include "libsigrok-internal.h"
 
 /**
  * @file
@@ -140,6 +141,45 @@ SR_API const char *sr_strerror_name(int error_code)
 	default:
 		return "unknown error code";
 	}
+}
+
+static void clear_error_stack(gpointer *data)
+{
+	g_slist_free_full((GSList *) data, g_free);
+}
+
+static GPrivate error_stack = G_PRIVATE_INIT((GDestroyNotify) clear_error_stack);
+
+/**
+ * Push an error message to the current thread's error stack.
+ */
+SR_PRIV void sr_error_stack_push(const char *message)
+{
+	GSList *old = sr_error_stack_get();
+	GSList *new = g_slist_prepend(old, (gpointer) g_strdup(message));
+	g_private_set(&error_stack, new);
+}
+
+/**
+ * Get the current error stack.
+ *
+ * @return A GSList of error messages of type const gchar *, most recent first.
+ *         The caller should NOT free this list or its contents directly. If the
+ *         caller handles the errors, it should call sr_error_stack_clear() to
+ *         clear the stack and free the current messages.
+ */
+SR_API GSList *sr_error_stack_get()
+{
+	return (GSList *) g_private_get(&error_stack);
+}
+
+/**
+ * Clear the current thread's error stack.
+ */
+SR_API void sr_error_stack_clear()
+{
+	if (sr_error_stack_get())
+		g_private_replace(&error_stack, NULL);
 }
 
 /** @} */

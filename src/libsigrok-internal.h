@@ -560,6 +560,10 @@ SR_PRIV int sr_source_add_pollfd(GPollFD *pollfd, int timeout,
 SR_PRIV int sr_source_add_channel(GIOChannel *channel, int events, int timeout,
 		sr_receive_data_callback cb, void *cb_data);
 
+/*--- error.c ---------------------------------------------------------------*/
+
+SR_PRIV void sr_error_stack_push(const char *message);
+
 /*--- session.c -------------------------------------------------------------*/
 
 struct sr_session {

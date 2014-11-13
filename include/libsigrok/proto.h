@@ -204,5 +204,7 @@ SR_API const char *sr_lib_version_string_get(void);
 
 SR_API const char *sr_strerror(int error_code);
 SR_API const char *sr_strerror_name(int error_code);
+SR_API GSList *sr_error_stack_get();
+SR_API void sr_error_stack_clear();
 
 #endif
