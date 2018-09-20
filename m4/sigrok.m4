@@ -52,28 +52,6 @@ m4_define([_SR_PKG_VERSION_SET],
 [dnl
 m4_assert([$# >= 6])[]dnl
 $1=$4
-sr_git_deps=
-# Check if we can get revision information from git.
-sr_head=`git -C "$srcdir" rev-parse --verify --short HEAD 2>&AS_MESSAGE_LOG_FD`
-
-AS_IF([test "$?" = 0 && test "x$sr_head" != x], [dnl
-	test ! -f "$srcdir/.git/HEAD" \
-		|| sr_git_deps="$sr_git_deps \$(top_srcdir)/.git/HEAD"
-
-	sr_head_name=`git -C "$srcdir" rev-parse --symbolic-full-name HEAD 2>&AS_MESSAGE_LOG_FD`
-	AS_IF([test "$?" = 0 && test -f "$srcdir/.git/$sr_head_name"],
-		[sr_git_deps="$sr_git_deps \$(top_srcdir)/.git/$sr_head_name"])
-
-	# Append the revision hash unless we are exactly on a tagged release.
-	git -C "$srcdir" describe --match "$3$4" \
-		--exact-match >&AS_MESSAGE_LOG_FD 2>&AS_MESSAGE_LOG_FD \
-		|| $1="[$]$1-git-$sr_head"
-])
-# Use $(wildcard) so that things do not break if for whatever
-# reason these files do not exist anymore at make time.
-AS_IF([test -n "$sr_git_deps"],
-	[SR_APPEND([CONFIG_STATUS_DEPENDENCIES], ["\$(wildcard$sr_git_deps)"])])
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES])[]dnl
 AC_SUBST([$1])[]dnl
 dnl
 AC_DEFINE([$1_MAJOR], [$5], [Major version number of $2.])[]dnl
