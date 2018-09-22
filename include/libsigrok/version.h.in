@@ -20,6 +20,18 @@
 #ifndef LIBSIGROK_VERSION_H
 #define LIBSIGROK_VERSION_H
 
+/* Don't include git-version.h when building most of the library. The
+   LIBSIGROK_INTERNAL define is set when compiling all libsigrok source
+   files except version.c, so that gcc dependency tracing does not have
+   them depending on git-version.h. It is undefined by version.c before
+   including this header. Including git-version.h only affects the
+   definition of SR_PACKAGE_VERSION_STRING, which is only referenced
+   within the library source in version.c. */
+
+#ifndef LIBSIGROK_INTERNAL
+#include <libsigrok/git-version.h>
+#endif
+
 /**
  * @file
  *
@@ -46,7 +58,10 @@
 #undef SR_PACKAGE_VERSION_MICRO
 
 /** The libsigrok package version ("major.minor.micro") as string. */
-#undef SR_PACKAGE_VERSION_STRING
+#define SR_PACKAGE_VERSION_STRING_PREFIX
+
+/** The libsigrok package version with git commit suffix. */
+#define SR_PACKAGE_VERSION_STRING (SR_PACKAGE_VERSION_STRING_PREFIX SR_PACKAGE_VERSION_STRING_SUFFIX)
 
 /*
  * Library/libtool version macros (can be used for conditional compilation).

@@ -57,7 +57,7 @@ dnl
 AC_DEFINE([$1_MAJOR], [$5], [Major version number of $2.])[]dnl
 AC_DEFINE([$1_MINOR], [$6], [Minor version number of $2.])[]dnl
 m4_ifval([$7], [AC_DEFINE([$1_MICRO], [$7], [Micro version number of $2.])])[]dnl
-AC_DEFINE_UNQUOTED([$1_STRING], ["[$]$1"], [Version of $2.])[]dnl
+AC_DEFINE_UNQUOTED([$1_STRING_PREFIX], ["[$]$1"], [Version of $2.])[]dnl
 ])
 
 ## SR_PKG_VERSION_SET(var-prefix, version-triple)

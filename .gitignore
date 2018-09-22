@@ -26,6 +26,7 @@
 /config.*
 /doxy/
 /include/libsigrok/version.h
+/include/libsigrok/git-version.h
 /libsigrok-*.tar.*
 /libsigrok.pc
 /libtool

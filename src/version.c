@@ -17,7 +17,10 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include <config.h>
+/* Unset flag before including version.h, to get git version suffix. */
+#undef LIBSIGROK_INTERNAL
 #include <libsigrok/libsigrok.h>
 
 /**

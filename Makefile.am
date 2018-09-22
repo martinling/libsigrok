@@ -42,7 +42,7 @@ AM_CPPFLAGS = $(local_includes) $(global_defs)
 
 # The tests CFLAGS are a superset of the libsigrok CFLAGS, and the
 # python bindings CFLAGS are a superset of the C++ bindings CFLAGS.
-AM_CFLAGS = $(SR_EXTRA_CFLAGS) $(SR_WFLAGS) $(TESTS_CFLAGS)
+AM_CFLAGS = $(SR_EXTRA_CFLAGS) $(SR_WFLAGS) $(TESTS_CFLAGS) -DLIBSIGROK_INTERNAL
 AM_CXXFLAGS = $(SR_WXXFLAGS) $(LIBSIGROKCXX_CFLAGS)
 
 lib_LTLIBRARIES = libsigrok.la
@@ -612,6 +612,13 @@ library_include_HEADERS = \
 nodist_library_include_HEADERS = \
 	include/libsigrok/version.h
 noinst_HEADERS = src/libsigrok-internal.h
+
+$(builddir)/src/version.lo: $(srcdir)/include/libsigrok/git-version.h
+
+GIT_HEAD != git rev-parse --symbolic-full-name HEAD
+
+$(srcdir)/include/libsigrok/git-version.h: $(srcdir)/.git/HEAD $(srcdir)/.git/$(GIT_HEAD)
+	$(AM_V_GEN)echo '#define SR_PACKAGE_VERSION_STRING_SUFFIX "-git-'`git -C "$(srcdir)" rev-parse --verify --short HEAD`'"' > $@
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libsigrok.pc
